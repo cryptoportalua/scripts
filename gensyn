@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Update server
+sudo apt-get update && \
+sudo apt install curl wget git build-essential python3 python3-pip python3-venv screen -y
+
+# Install docker
+source <(curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/utils/docker)
+
+# Install Node.js & yarn
+source <(curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/utils/node_js)
+
+# Open port
+ufw allow 3000
+
+# Install gensyn
+git clone https://github.com/gensyn-ai/rl-swarm/ && \
+cd /root/rl-swarm && python3 -m venv .venv && source .venv/bin/activate
+
+cd modal-login && yarn install && \
+yarn upgrade && yarn add next@latest && yarn add viem@latest && \
+cd .. && ./run_rl_swarm.sh
