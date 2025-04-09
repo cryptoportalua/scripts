@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# source <(curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/utils/node_js)
+
+command -v node > /dev/null 2>&1 || {
+    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+    sudo apt install -y nodejs
+}
+
+echo "Node.js version: $(node --version)"
+
+yarn --version || npm install -g yarn
