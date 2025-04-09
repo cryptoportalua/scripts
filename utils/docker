@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s <url>)
+# source <(curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/utils/docker)
 
 # Install Docker
 if ! [ -x "$(command -v docker)" ]; then
