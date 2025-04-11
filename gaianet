@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Logo
-curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/logo | bash
+curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/utils/logo | bash
 
 PS3='Select an action: '
 options=(
@@ -48,7 +48,10 @@ do
     #================================================================
     "Delete GaiaNet")
       echo "Deleting GaiaNet..."
-      # You can add logic here to delete GaiaNet if needed
+      gaianet stop
+      rm -rf ~/gaianet*
+      rm -rf ~/crocogaia
+      echo "GaiaNet deleted"
       break
       ;;
     #================================================================
