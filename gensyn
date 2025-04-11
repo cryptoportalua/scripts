@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Logo
+curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/utils/logo | bash
+
 # Update server
 sudo apt-get update && \
 sudo apt install curl wget git build-essential python3 python3-pip python3-venv screen -y
