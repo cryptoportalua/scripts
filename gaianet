@@ -1,64 +1,63 @@
 #!/bin/bash
 
-  # Logo
+# Logo
 curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/logo | bash
 
 PS3='Select an action: '
 options=(
-"Install GaiaNet"
-"Update GaiaNet"
-"Delete GaiaNet"
-"Exit")
+  "Install GaiaNet"
+  "Update GaiaNet"
+  "Delete GaiaNet"
+  "Exit"
+)
+
 select opt in "${options[@]}"
 do
-case $opt in
-#================================================================
+  case $opt in
+    #================================================================
+    "Install GaiaNet")
+      echo "Installing GaiaNet..."
+      
+      curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
 
-"Install Node")
+      sed -i "s/device-cf543e37e491609d4c3f82d6/device-9253f979f44d8dae0cc5dde5/g" ~/gaianet/gaia-frp/frpc.toml
 
-curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
+      read -p 'Введіть нову адресу: ' new_addr
 
-sed -i "s/device-cf543e37e491609d4c3f82d6/device-9253f979f44d8dae0cc5dde5/g" ~/gaianet/gaia-frp/frpc.toml
+      sed -i "s/0x[a-f0-9]\{40\}/${new_addr}/g" ~/gaianet/gaia-frp/frpc.toml
+      sed -i "s/localPort = 8080/localPort = 8282/g" ~/gaianet/gaia-frp/frpc.toml
+      sed -i 's/"llamaedge_port": "8080"/"llamaedge_port": "8282"/g' ~/gaianet/config.json
 
-read -p 'Введіть нову адресу: ' new_addr
+      gaianet init
+      gaianet start
+      break
+      ;;
+    #================================================================
+    "Update GaiaNet")
+      echo "Updating GaiaNet..."
 
-sed -i "s/0x[a-f0-9]\{40\}/${new_addr}/g" ~/gaianet/gaia-frp/frpc.toml  
-sed -i "s/localPort = 8080/localPort = 8282/g" ~/gaianet/gaia-frp/frpc.toml  
-sed -i 's/"llamaedge_port": "8080"/"llamaedge_port": "8282"/g' ~/gaianet/config.json
+      gaianet stop
 
-gaianet init 
+      curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
 
-gaianet start	
+      source $HOME/.bashrc
 
-
-break
-;;
-
-#================================================================
-"Update Node")
-
-
-gaianet stop
-
-curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
-
-source $HOME/.bashrc
-
-gaianet start
-
-break
-;;
-
-#================================================================
-
-"Delete Node")
-
-break
-;;
-
-#================================================================
-
-"Exit")
-exit
-esac
+      gaianet start
+      break
+      ;;
+    #================================================================
+    "Delete GaiaNet")
+      echo "Deleting GaiaNet..."
+      # You can add logic here to delete GaiaNet if needed
+      break
+      ;;
+    #================================================================
+    "Exit")
+      echo "Exiting script."
+      exit
+      ;;
+    *)
+      echo "Invalid option, please try again."
+      ;;
+  esac
 done
