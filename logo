@@ -1,0 +1,35 @@
+#!/bin/sh
+
+BLUE="\e[34m"
+CYAN="\e[36m"
+MAGENTA="\e[35m"
+YELLOW="\e[33m"
+ENDCOLOR="\e[0m"
+
+echo -e "${CYAN}"
+echo "╭──────────────────────────────────────────────────────────────╮"
+echo "│   ⟁   ⟁   ⟁   W E L C O M E   T O   T H E   ⟁   ⟁   ⟁       │"
+echo "╰──────────────────────────────────────────────────────────────╯"
+
+echo -e "${MAGENTA}"
+echo "        ╭────────────────────────────────────────────╮"
+echo "        │                                            │"
+echo "        │  ${CYAN} ██████╗██████╗ ██╗   ██╗████████╗${MAGENTA}   │"
+echo "        │  ${CYAN}██╔════╝██╔══██╗╚██╗ ██╔╝╚══██╔══╝${MAGENTA}   │"
+echo "        │  ${CYAN}██║     ██████╔╝ ╚████╔╝    ██║   ${MAGENTA}   │"
+echo "        │  ${YELLOW}██║     ██╔═══╝   ╚██╔╝     ██║   ${MAGENTA}   │"
+echo "        │  ${YELLOW}╚██████╗██║        ██║      ██║   ${MAGENTA}   │"
+echo "        │  ${YELLOW} ╚═════╝╚═╝        ╚═╝      ╚═╝   ${MAGENTA}   │"
+echo "        │                                            │"
+echo "        ╰────────────────────────────────────────────╯"
+
+echo -e "${BLUE}"
+echo "        ┌──────────────────────────────────────────┐"
+echo "        │   ${YELLOW}☄️  Enter the Crypto Portal to explore  ${BLUE}│"
+echo "        │   ${YELLOW}🌐  Chains, Tokens, DApps & Wallets     ${BLUE}│"
+echo "        │   ${YELLOW}🔐  Secure. Decentralized. Limitless.   ${BLUE}│"
+echo "        └──────────────────────────────────────────┘"
+
+echo -e "${MAGENTA}"
+echo "                 ░▒▓█ ${CYAN}C R Y P T O   P O R T A L${MAGENTA} █▓▒░"
+echo -e "${CYAN}══════════════════════⟁  [ Web3 Awaits ]  ⟁══════════════════════${ENDCOLOR}"
