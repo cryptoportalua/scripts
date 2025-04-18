@@ -23,39 +23,29 @@ case $REPLY in
     if [ -z "$GITHUB_EMAIL" ]; then
         read -p $'\e[1;35mВведи GitHub Email:\e[0m ' GITHUB_EMAIL
         echo "export GITHUB_EMAIL=\"$GITHUB_EMAIL\"" >> ~/.bashrc
-        export GITHUB_EMAIL
     fi
     
     if [ -z "$GITHUB_USERNAME" ]; then
         read -p $'\e[1;35mВведи GitHub Username:\e[0m ' GITHUB_USERNAME
         echo "export GITHUB_USERNAME=\"$GITHUB_USERNAME\"" >> ~/.bashrc
-        export GITHUB_USERNAME
     fi
     
     if [ -z "$ADDRESS" ]; then
         read -p $'\e[1;35mВведи адресу свого гаманця:\e[0m ' ADDRESS
-        echo "export ADDRESS=\"$ADDRESS\"" >> ~/.bashrc
-        export ADDRESS
     fi
     
     if [ -z "$PRIV_KEY" ]; then
         read -p $'\e[1;35mВведи приватний ключ:\e[0m ' PRIV_KEY
-        echo "export PRIV_KEY=\"$PRIV_KEY\"" >> ~/.bashrc
-        echo "export DROSERA_PRIVATE_KEY=\"$PRIV_KEY\"" >> ~/.bashrc
-        export PRIV_KEY
-        export DROSERA_PRIVATE_KEY="$PRIV_KEY"
     fi
 
     if [ -z "$HOLESKY_RPC" ]; then
         read -p $'\e[1;35mВведи приватний rpc:\e[0m ' HOLESKY_RPC
         echo "export HOLESKY_RPC=\"$HOLESKY_RPC\"" >> ~/.bashrc
-        export HOLESKY_RPC
     fi
     
     if [ -z "$HOLESKY_RPC1" ]; then
         read -p $'\e[1;35mВведи резервний приватний rpc:\e[0m ' HOLESKY_RPC1
         echo "export HOLESKY_RPC1=\"$HOLESKY_RPC1\"" >> ~/.bashrc
-        export HOLESKY_RPC1
     fi
 
     source ~/.bashrc
