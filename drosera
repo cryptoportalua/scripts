@@ -63,6 +63,7 @@ case $REPLY in
 
     curl -fsSL https://bun.sh/install | bash && source ~/.bashrc && bun install && forge build
     export DROSERA_PRIVATE_KEY="$PRIV_KEY"
+    sed -i 's|^ethereum_rpc = ".*"|ethereum_rpc = "'"$HOLESKY_RPC"'"|' drosera.toml
     drosera apply
     return
     ;;
