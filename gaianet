@@ -58,7 +58,7 @@ EOF
 
       gaianet stop
 
-      curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash
+      curl -sSfL 'https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh' | bash -s -- --upgrade
 
       source $HOME/.bashrc
 
