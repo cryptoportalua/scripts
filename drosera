@@ -13,6 +13,7 @@ options=(
   "Подивитись логи"
   "Opt in"
   "Замінити RPC"
+  "Update"
   "Вихід"
 )
 select opt in "${options[@]}"
@@ -182,11 +183,22 @@ EOF
     ;;
 
   8)
+    curl -L https://app.drosera.io/install | bash
+    source /root/.bashrc
+    droseraup
+    cd my-drosera-trap
+    sed -i 's|https://seed-node.testnet.drosera.io|https://relay.testnet.drosera.io|g' drosera.toml
+    echo "ofc" | DROSERA_PRIVATE_KEY="$PRIV_KEY" drosera apply
+    return
+    ;;
+
+  9)
     echo -e "\e[1;35mСкрипт завершено.\e[0m"
     return
     ;;
   *)
     echo -e "\e[1;31mНевірний вибір, спробуй знову.\e[0m"
     ;;
+
 esac
 done
