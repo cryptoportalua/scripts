@@ -188,6 +188,7 @@ EOF
     droseraup
     cd my-drosera-trap
     sed -i 's|https://seed-node.testnet.drosera.io|https://relay.testnet.drosera.io|g' drosera.toml
+    read -p $'\e[1;35mВведи приватний ключ:\e[0m ' PRIV_KEY    
     echo "ofc" | DROSERA_PRIVATE_KEY="$PRIV_KEY" drosera apply
     return
     ;;
