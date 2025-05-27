@@ -1,23 +1,89 @@
 #!/bin/bash
+set -e
 
-# source <(curl -s https://raw.githubusercontent.com/cryptoportalua/scripts/refs/heads/main/utils/docker)
+# ===== КОЛЬОРИ =====
+INFO='\033[0;36m'
+OK='\033[0;32m'
+WARN='\033[0;33m'
+ERR='\033[0;31m'
+NC='\033[0m' # No Color
 
-# Install Docker
-if ! [ -x "$(command -v docker)" ]; then
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
-sudo usermod -aG docker $USER
-docker --version
+echo -e "${INFO}⏳ Починаємо встановлення Docker та Docker Compose...${NC}"
+
+# ===== ВСТАНОВЛЕННЯ DOCKER =====
+if ! command -v docker &>/dev/null; then
+  echo -e "${WARN}Docker не знайдено. Встановлюємо...${NC}"
+  
+  sudo apt update
+  sudo apt install -y \
+    curl \
+    ca-certificates \
+    apt-transport-https \
+    gnupg \
+    lsb-release
+
+  # Додаємо GPG-ключ
+  if [ ! -f /usr/share/keyrings/docker-archive-keyring.gpg ]; then
+    curl -fsSL https://download.docker.com/linux/$(. /etc/os-release && echo "$ID")/gpg \
+      | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  fi
+
+  # Додаємо репозиторій Docker
+  echo \
+    "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+     https://download.docker.com/linux/$(. /etc/os-release && echo "$ID") \
+     $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+    | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  # Встановлюємо Docker
+  sudo apt update
+  sudo apt install -y docker-ce docker-ce-cli containerd.io
+
+  echo -e "${OK}✔ Docker встановлено: $(docker --version)${NC}"
 else
-echo $(docker --version)
+  echo -e "${OK}✔ Docker вже встановлено: $(docker --version)${NC}"
 fi
-           
-# Install Docker Compose
-if ! [ -x "$(command -v docker-compose)" ]; then
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose 
-sudo chmod +x /usr/local/bin/docker-compose 
-sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-docker-compose --version
+
+# ===== ДОДАЄМО КОРИСТУВАЧА ДО ГРУПИ DOCKER =====
+if ! groups $USER | grep -q '\bdocker\b'; then
+  echo -e "${WARN}Додаємо користувача до групи docker...${NC}"
+  sudo usermod -aG docker $USER
+  echo -e "${INFO}🔁 Після завершення роботи скрипта — перелогінься або перезавантаж систему.${NC}"
 else
-echo $(docker-compose --version)
+  echo -e "${OK}✔ Користувач вже у групі docker${NC}"
 fi
+
+# ===== ВСТАНОВЛЕННЯ DOCKER COMPOSE =====
+if ! command -v docker-compose &>/dev/null; then
+  echo -e "${WARN}Docker Compose не знайдено. Встановлюємо...${NC}"
+
+  sudo apt install -y wget jq
+
+  # Остання версія з GitHub
+  COMPOSE_VER=$(wget -qO- https://api.github.com/repos/docker/compose/releases/latest | jq -r ".tag_name")
+
+  # Встановлюємо класичний docker-compose (для сумісності)
+  sudo wget -O /usr/local/bin/docker-compose \
+    "https://github.com/docker/compose/releases/download/${COMPOSE_VER}/docker-compose-$(uname -s)-$(uname -m)"
+  sudo chmod +x /usr/local/bin/docker-compose
+
+  # Встановлюємо також CLI-плагін для нової версії
+  DOCKER_CLI_PLUGINS=${DOCKER_CLI_PLUGINS:-"$HOME/.docker/cli-plugins"}
+  mkdir -p "$DOCKER_CLI_PLUGINS"
+  curl -fsSL \
+    "https://github.com/docker/compose/releases/download/${COMPOSE_VER}/docker-compose-$(uname -s)-$(uname -m)" \
+    -o "${DOCKER_CLI_PLUGINS}/docker-compose"
+  chmod +x "${DOCKER_CLI_PLUGINS}/docker-compose"
+
+  echo -e "${OK}✔ Docker Compose ${COMPOSE_VER} встановлено${NC}"
+else
+  echo -e "${OK}✔ Docker Compose вже встановлено: $(docker-compose --version)${NC}"
+fi
+
+# ===== ФІНАЛ =====
+echo -e "${INFO}---------------------------------------------${NC}"
+echo -e "${OK}✅ Встановлення завершено!"
+echo -e "${OK}➡ Docker: $(docker --version)"
+echo -e "${OK}➡ Docker Compose: $(docker-compose --version)"
+echo -e "${INFO}🔁 Не забудь перелогінитися для активації групи docker${NC}"
+echo -e "${INFO}---------------------------------------------${NC}"
